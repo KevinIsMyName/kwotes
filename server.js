@@ -4,6 +4,8 @@ const app = express();
 const cors = require("cors");
 const path = require("path");
 
+const port = 3000;
+
 
 app.use(cors());
 app.use(express.static("public"));
@@ -25,6 +27,6 @@ app.get("/*", function (req, res) {
 });
 
 
-app.listen(8080, function () {
-    console.log("Listening on port " + 8080);
+app.listen(port, function () {
+    console.log(`Listening on port ${port}`);
 });
