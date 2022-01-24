@@ -1,0 +1,13 @@
+{
+	"name": "kevin",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"context": ".."
+	},
+
+	"containerUser": "kevin",
+
+	"settings": {
+		"terminal.integrated.shell.linux": "/bin/bash",
+	},
+}
