@@ -8,7 +8,6 @@ const refreshQuote = async () => {
     // Get quote via Fetch API
     let request = await fetch('./api');
     let response = await request.json();
-    console.log(response);
 
     // Add quote to page
     quoteEl.innerText = response.quote;
