@@ -11,4 +11,4 @@ npm start
 ```
 
 ### Help
-See this [guide](https://www.freecodecamp.org/news/deploy-nodejs-app-server-to-production/) I found helpful.
+See this [guide](https://www.freecodecamp.org/news/deploy-nodejs-app-server-to-production/) I found helpful when building this app.

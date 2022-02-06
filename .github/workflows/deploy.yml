@@ -2,7 +2,7 @@ name: Deploy to DigitalOcean
 on:
   push:
     branches:
-      - cicd
+      - master
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -27,7 +27,7 @@ jobs:
           remote_user: ${{ secrets.USERNAME }}
           remote_key: ${{ secrets.KEY }}
           remote_port: ${{ secrets.PORT }}
-      - name: Move files to nginx's serve folder
+      - name: Move repository to nginx's serve folder
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
