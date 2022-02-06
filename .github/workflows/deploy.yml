@@ -41,6 +41,5 @@ jobs:
             cd ..
             echo ${{ secrets.PASSWORD }} | sudo -S ls -al ~/${{ github.repository }}
             cd ~/${{ github.repository }} && npm ci
-            echo ${{ secrets.PASSWORD }} | sudo -S mv ~/${{ github.repository }} /var/www/${{ github.repository }}
             
             
