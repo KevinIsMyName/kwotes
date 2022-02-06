@@ -1,0 +1,43 @@
+name: Deploy to DigitalOcean
+on:
+  push:
+    branches:
+      - master
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create target directory for rsync
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            mkdir -p ~/${{ github.repository }}
+      - name: rsync repository to DigitalOcean
+        uses: burnett01/rsync-deployments@5.2
+        with:
+          switches: -azvr --delete
+          path: .
+          remote_path: ~/${{ github.repository }}
+          remote_host: ${{ secrets.HOST }}
+          remote_user: ${{ secrets.USERNAME }}
+          remote_key: ${{ secrets.KEY }}
+          remote_port: ${{ secrets.PORT }}
+      - name: Move repository to nginx's serve folder
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd ~/${{ github.repository }} && npm ci
+            echo ${{ secrets.PASSWORD }} | sudo -S mkdir -p /var/www/${{ github.repository }}
+            echo ${{ secrets.PASSWORD }} | sudo -S rsync -azvr --delete ~/${{ github.repository }}/* /var/www/${{ github.repository }}
+            pm2 delete all && pm2 start /var/www/${{ github.repository }}/server.js && pm2 save && pm2 startup systemd
+            echo ${{ secrets.PASSWORD }} | sudo -S env PATH=$PATH:/usr/bin /usr/local/lib/node_modules/pm2/bin/pm2 startup systemd -u git-cicd-runner --hp /home/git-cicd-runner 
+
