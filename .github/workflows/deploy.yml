@@ -39,3 +39,8 @@ jobs:
             echo ${{ secrets.PASSWORD }} | sudo -S mkdir -p /var/www/${{ github.repository }}
             echo ${{ secrets.PASSWORD }} | sudo -S rsync -azvr --delete ~/${{ github.repository }}/* /var/www/${{ github.repository }}
             node /var/www/${{ github.repository }}/server.js
+            pm2 start app.js
+            pm2 save
+            pm2 startup systemd
+            echo ${{ secrets.PASSWORD }} | sudo -S reboot
+
