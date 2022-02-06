@@ -38,4 +38,5 @@ jobs:
             whoami
             cd ..
             echo ${{ secrets.PASSWORD }} | sudo -S ls -al ~/${{ github.repository }}
+            echo ${{ secrets.PASSWORD }} | sudo -S mv ~/${{ github.repository }} /var/www/~${{ github.repository }}
             
