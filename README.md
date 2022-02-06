@@ -8,3 +8,6 @@
 npm install
 npm start
 ```
+
+### Help
+See this [guide](https://www.freecodecamp.org/news/deploy-nodejs-app-server-to-production/) I found helpful.
