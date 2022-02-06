@@ -17,8 +17,6 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             mkdir -p ~/${{ github.repository }}
-            mkdir -p /var/www/${{ github.repository }}
-            echo ${{ secrets.PASSWORD }} | sudo -S mkdir -p /var/www/${{ github.repository }}
       - name: rsync repository to DigitalOcean
         uses: burnett01/rsync-deployments@5.2
         with:
@@ -37,9 +35,6 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            whoami
-            cd ..
-            echo ${{ secrets.PASSWORD }} | sudo -S ls -al ~/${{ github.repository }}
             cd ~/${{ github.repository }} && npm ci
-            
-            
+            echo ${{ secrets.PASSWORD }} | sudo -S mkdir -p /var/www/${{ github.repository }}
+            echo ${{ secrets.PASSWORD }} | sudo -S mv ~/${{ github.repository }}/* /var/www/${{ github.repository }}
