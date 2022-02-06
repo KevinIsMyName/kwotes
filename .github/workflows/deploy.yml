@@ -32,5 +32,4 @@ jobs:
           script: |
             whoami
             cd ..
-            sudo ls -al
-            ${{ secrets.PASSWORD }}
+            echo ${{ secrets.PASSWORD }} | sudo -S ls -al
