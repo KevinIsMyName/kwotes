@@ -28,5 +28,4 @@ jobs:
           script: |
             whoami
             cd ..
-            echo ${{ secrets.PASSWORD }} | sudo -S ls -al
-            cat ~/${{ github.repository }}
+            echo ${{ secrets.PASSWORD }} | sudo -S ls -al ~/${{ github.repository }}
