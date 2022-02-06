@@ -16,7 +16,7 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            mkdir - ~/${{ github.repository }}
+            mkdir -p ~/${{ github.repository }}
       - name: rsync repository to DigitalOcean
         uses: burnett01/rsync-deployments@5.2
         with:
