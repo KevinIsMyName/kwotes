@@ -1,4 +1,4 @@
-name: GitHub Actions Demo
+name: Deploy to Digital Ocean
 on:
   push:
     branches:
@@ -8,10 +8,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: rsync deployments
+      - name: Create target directory for rsync
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            mkdir - ~/${{ github.repository }}
+      - name: rsync repository to DigitalOcean
         uses: burnett01/rsync-deployments@5.2
         with:
-          switches: -avzrhP --delete
+          switches: -azvr --delete
           path: .
           remote_path: ~/${{ github.repository }}
           remote_host: ${{ secrets.HOST }}
@@ -29,3 +38,4 @@ jobs:
             whoami
             cd ..
             echo ${{ secrets.PASSWORD }} | sudo -S ls -al ~/${{ github.repository }}
+            
