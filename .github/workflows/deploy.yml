@@ -37,4 +37,4 @@ jobs:
           script: |
             cd ~/${{ github.repository }} && npm ci
             echo ${{ secrets.PASSWORD }} | sudo -S mkdir -p /var/www/${{ github.repository }}
-            echo ${{ secrets.PASSWORD }} | sudo -S mv ~/${{ github.repository }}/* /var/www/${{ github.repository }}
+            echo ${{ secrets.PASSWORD }} | sudo -S rsync -azvr --delete ~/${{ github.repository }}/* /var/www/${{ github.repository }}
