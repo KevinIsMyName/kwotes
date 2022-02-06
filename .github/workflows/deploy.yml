@@ -27,7 +27,7 @@ jobs:
           remote_user: ${{ secrets.USERNAME }}
           remote_key: ${{ secrets.KEY }}
           remote_port: ${{ secrets.PORT }}
-      - name: executing remote ssh commands using ssh key
+      - name: Move files to nginx's serve folder
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
@@ -38,8 +38,6 @@ jobs:
             cd ~/${{ github.repository }} && npm ci
             echo ${{ secrets.PASSWORD }} | sudo -S mkdir -p /var/www/${{ github.repository }}
             echo ${{ secrets.PASSWORD }} | sudo -S rsync -azvr --delete ~/${{ github.repository }}/* /var/www/${{ github.repository }}
-            pm2 start /var/www/${{ github.repository }}/server.js
-            pm2 save
-            pm2 startup systemd
+            pm2 delete all && pm2 start /var/www/${{ github.repository }}/server.js && pm2 save && pm2 startup systemd
             echo ${{ secrets.PASSWORD }} | sudo -S env PATH=$PATH:/usr/bin /usr/local/lib/node_modules/pm2/bin/pm2 startup systemd -u git-cicd-runner --hp /home/git-cicd-runner 
 
